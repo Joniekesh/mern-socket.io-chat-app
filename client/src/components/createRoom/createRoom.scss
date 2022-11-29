@@ -1,0 +1,54 @@
+.createRoom {
+	min-width: 265px;
+	background-color: white;
+	padding: 10px;
+	border-radius: 8px;
+	position: fixed;
+	top: 120px;
+	margin: auto;
+	z-index: 100;
+
+	form {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+
+		input {
+			width: 100%;
+			outline: none;
+			border: none;
+			font-weight: 700;
+			padding: 10px;
+			border-bottom: 1.5px solid #002e94;
+		}
+
+		.buttons {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 100px;
+
+			.cancel {
+				background-color: crimson;
+				color: white;
+			}
+			.create {
+				background-color: green;
+				color: white;
+			}
+
+			button {
+				padding: 6px;
+				border: none;
+				cursor: pointer;
+				border-radius: 5px;
+				font-size: 12px;
+				transition: all 0.5s ease-in-out;
+
+				&:hover {
+					transform: scale(1.03);
+				}
+			}
+		}
+	}
+}

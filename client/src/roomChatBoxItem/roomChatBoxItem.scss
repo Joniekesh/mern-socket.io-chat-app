@@ -1,0 +1,111 @@
+.messageItem {
+	display: flex;
+	max-width: 400px;
+	padding: 6px;
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	margin-left: 10px;
+	background-color: teal;
+
+	.itemDetails {
+		display: flex;
+		position: relative;
+
+		.deletEdit {
+			position: absolute;
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+			padding: 3px;
+			position: absolute;
+			background-color: white;
+			width: 100px;
+			top: 16px;
+			border-radius: 5px;
+			right: 0;
+			z-index: 1;
+
+			.delItem {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				font-weight: 600;
+				font-size: 15px;
+				cursor: pointer;
+			}
+
+			.delItem.delete {
+				color: crimson;
+			}
+
+			.delItem.edit {
+				color: teal;
+			}
+		}
+
+		.messageLeft {
+			img {
+				width: 32px;
+				height: 32px;
+				border-radius: 50%;
+				object-fit: cover;
+			}
+		}
+
+		.messageLeft.own {
+			display: none;
+		}
+
+		.messageRight {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+
+			.topSide {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+
+				.username {
+					font-weight: 700;
+				}
+
+				.username.own {
+					display: none;
+				}
+
+				.messageTime {
+					font-size: 13px;
+				}
+
+				.you {
+					display: none;
+				}
+
+				.you.own {
+					display: flex;
+					font-weight: 700;
+				}
+			}
+
+			.topSide.own {
+				align-self: flex-end;
+				margin-right: 20px;
+			}
+
+			.text {
+				background-color: rgb(221, 220, 220);
+				max-width: 400px;
+				text-align: justify;
+				padding: 6px;
+			}
+			.text.own {
+				background-color: #002e94;
+				color: white;
+			}
+		}
+	}
+}
+.messageItem.own {
+	align-self: flex-end;
+}

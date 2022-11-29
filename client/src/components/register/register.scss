@@ -1,0 +1,52 @@
+.register {
+	z-index: 5;
+	h2 {
+		color: white;
+		text-align: center;
+		margin-bottom: 20px;
+		font-weight: 700;
+	}
+	form {
+		background-color: white;
+		padding: 10px;
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+		border-radius: 10px;
+		width: 250px;
+
+		.inputGroup {
+			display: flex;
+			flex-direction: column;
+
+			label {
+				font-weight: 700;
+				color: #000954;
+			}
+
+			input {
+				padding: 6px;
+				width: 100%;
+				border: 1px solid #ddd;
+				font-size: 17px;
+				font-weight: 500;
+			}
+		}
+
+		button {
+			width: 100%;
+			border: none;
+			padding: 8px;
+			cursor: pointer;
+			background-color: #000954;
+			color: white;
+			font-weight: 700;
+			border-radius: 5px;
+			transition: all 0.8s ease-in-out;
+
+			&:hover {
+				transform: scale(1.05);
+			}
+		}
+	}
+}

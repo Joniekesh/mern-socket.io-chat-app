@@ -1,0 +1,40 @@
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Lato", sans-serif;
+}
+
+.app {
+	width: 100%;
+	height: 100vh;
+	background: #000954;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	overflow: hidden;
+}
+
+.circle {
+	position: absolute;
+	top: -30px;
+	left: -30px;
+	width: 180px;
+	height: 180px;
+	border-radius: 50%;
+	background-color: crimson;
+}
+
+.circle2 {
+	position: absolute;
+	bottom: -30px;
+	right: -30px;
+	width: 180px;
+	height: 180px;
+	border-radius: 50%;
+	background-color: crimson;
+}

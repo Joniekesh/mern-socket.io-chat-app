@@ -1,0 +1,118 @@
+.friendChat {
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 2;
+
+	.friendChatContainer {
+		width: 90%;
+		height: 85vh;
+		border-radius: 10px;
+		background-color: whitesmoke;
+		display: flex;
+		overflow: hidden;
+		display: flex;
+
+		.chatBox {
+			flex: 3;
+			display: flex;
+			flex-direction: column;
+			background: url("../../../public/assets/bg.jpg");
+
+			.top {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 10px;
+				height: 70px;
+				position: sticky;
+				top: 0;
+				z-index: 50;
+				background-color: gray;
+				-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+				box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+				background-color: white;
+
+				.left {
+					display: flex;
+					align-items: center;
+					gap: 16px;
+
+					.imgDiv {
+						position: relative;
+
+						img {
+							width: 30px;
+							height: 30px;
+							border-radius: 50%;
+							object-fit: cover;
+						}
+
+						.onlineIndicator {
+							position: absolute;
+							top: 18px;
+							right: -3px;
+							height: 8px;
+							width: 8px;
+							border-radius: 50%;
+							background-color: green;
+						}
+
+						.roomName {
+							font-weight: 700;
+						}
+					}
+				}
+
+				.right {
+					display: flex;
+					align-items: center;
+					gap: 10px;
+
+					.icon {
+						color: #150050;
+						cursor: pointer;
+					}
+				}
+			}
+
+			.messages {
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+				margin: 24px 0px 10px 0px;
+				overflow-y: scroll;
+				overflow-x: hidden;
+				height: calc(100vh - 150px);
+
+				&::-webkit-scrollbar {
+					width: 8px;
+					background-color: #aaa;
+				}
+
+				&::-webkit-scrollbar-thumb {
+					background: teal;
+				}
+
+				.noMsgText {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					text-align: center;
+					opacity: 0.5;
+					font-size: 36px;
+					color: white;
+				}
+			}
+
+			.bottom {
+				width: 100%;
+				background-color: rgb(224, 221, 221);
+				padding: 10px;
+				height: 50px;
+			}
+		}
+	}
+}

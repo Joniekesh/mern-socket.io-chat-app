@@ -1,0 +1,85 @@
+@import "../../global.scss";
+
+.rightBar {
+	flex: 0.8;
+	display: flex;
+	justify-content: center;
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	background-color: white;
+	z-index: 150;
+	padding: 10px;
+	position: relative;
+
+	@include tablet {
+		display: none;
+	}
+
+	.cancel {
+		position: absolute;
+		top: 30px;
+		right: 30px;
+		cursor: pointer;
+	}
+
+	.rightBarContainer {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		gap: 20px;
+
+		.imgContainer {
+			position: relative;
+
+			img {
+				width: 100px;
+				height: 100px;
+				border-radius: 50%;
+				object-fit: cover;
+			}
+
+			.indicator {
+				position: absolute;
+				top: 80px;
+				left: 83px;
+				background-color: green;
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+			}
+		}
+
+		.userInfo {
+			h4 {
+				font-weight: 900;
+
+				span {
+					font-weight: 300;
+					opacity: 0.7;
+				}
+			}
+		}
+
+		.userFriends {
+			span {
+				font-weight: 700;
+			}
+
+			.images {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+
+				img {
+					width: 32px;
+					height: 32px;
+					border-radius: 50%;
+					object-fit: cover;
+					cursor: pointer;
+				}
+			}
+		}
+	}
+}

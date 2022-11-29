@@ -1,0 +1,50 @@
+.usersListitem {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px;
+	font-weight: 600;
+	cursor: pointer;
+
+	&:hover {
+		background-color: gray;
+		border-radius: 6px;
+	}
+
+	.left {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+
+		.imgDiv {
+			position: relative;
+
+			img {
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+				object-fit: cover;
+			}
+
+			.onlineIndicator {
+				position: absolute;
+				top: 18px;
+				right: -3px;
+				height: 8px;
+				width: 8px;
+				border-radius: 50%;
+				background-color: green;
+			}
+		}
+	}
+
+	.right {
+		button {
+			border: none;
+			padding: 3px;
+			color: #002e94;
+			cursor: pointer;
+			border-radius: 3px;
+		}
+	}
+}

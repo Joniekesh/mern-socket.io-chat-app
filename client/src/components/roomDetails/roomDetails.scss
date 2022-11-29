@@ -1,0 +1,222 @@
+.roomDetails {
+	flex: 1.3;
+	display: flex;
+	flex-direction: column;
+	background-color: #002e94;
+	color: white;
+	min-width: 270px;
+	height: 100%;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding: 10px;
+	position: relative;
+
+	&::-webkit-scrollbar {
+		width: 8px;
+		background-color: #aaa;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: teal;
+	}
+
+	.arrow {
+		font-size: 18px;
+		cursor: pointer;
+		position: sticky;
+		top: 10px;
+		left: 10px;
+	}
+
+	.search {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		background-color: rgb(207, 206, 206);
+		border-radius: 20px;
+		overflow: hidden;
+		padding: 8px;
+		margin: 20px 0 8px 0;
+		z-index: 40;
+
+		input {
+			background-color: transparent;
+			border: none;
+			outline: none;
+		}
+	}
+
+	.wrapper {
+		width: 100%;
+		height: 100px;
+		position: sticky;
+		top: 16px;
+		left: 10px;
+		z-index: 10;
+		margin-bottom: 200px;
+
+		.container {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			z-index: 100;
+			background-color: #000954;
+			align-items: center;
+			border-radius: 6px;
+			padding: 20px;
+
+			.roomTop {
+				position: relative;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-direction: column;
+				gap: 3px;
+
+				span {
+					position: absolute;
+					right: -30px;
+					top: 0;
+					color: green;
+					cursor: pointer;
+					font-weight: 700;
+				}
+
+				.inputDiv {
+					.textInput {
+						border: none;
+						outline: none;
+
+						&:focus {
+							outline: none;
+						}
+					}
+				}
+
+				.btn {
+					display: flex;
+					align-items: center;
+					gap: 60px;
+					font-size: 12px;
+
+					.canc {
+						font-size: 12px;
+					}
+
+					.upd {
+						font-size: 12px;
+						background-color: green;
+						color: white;
+					}
+				}
+			}
+
+			.imgDiv {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				img {
+					width: 80px;
+					height: 80px;
+					border-radius: 10px;
+					object-fit: cover;
+				}
+			}
+
+			.item {
+				display: flex;
+				align-items: center;
+				gap: 5px;
+			}
+
+			.item.count {
+				display: flex;
+				align-items: center;
+				border: 1px solid green;
+				width: max-content;
+				padding: 3px;
+				border-radius: 5px;
+				align-self: center;
+			}
+
+			button {
+				color: white;
+				background-color: crimson;
+				cursor: pointer;
+				border: none;
+				padding: 4px;
+				border-radius: 4px;
+			}
+		}
+
+		.membersDiv {
+			color: white;
+			background-color: rgb(2, 2, 70);
+			padding: 3px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			font-weight: 900;
+			z-index: 10;
+
+			span {
+				font-size: 16px;
+				font-weight: 600;
+			}
+		}
+
+		.line {
+			width: 100%;
+			opacity: 0.4;
+			height: 0.1px;
+		}
+	}
+
+	.membersList {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.roomLink {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		padding: 5px 0px 5px 5px;
+		border-radius: 5px;
+		gap: 2px;
+		font-weight: 600;
+		background-color: rgb(2, 2, 70);
+
+		span {
+			font-size: 14px;
+		}
+
+		button {
+			border: none;
+			padding: 6px;
+			background-color: teal;
+			color: white;
+			cursor: pointer;
+			transition: all 0.5s ease-in-out;
+			border-radius: 5px;
+			font-weight: 600;
+
+			&:hover {
+				background-color: white;
+				color: teal;
+			}
+		}
+
+		.linkText {
+			text-align: center;
+			font-weight: 900;
+		}
+	}
+}

@@ -1,0 +1,127 @@
+.messageItem {
+	display: flex;
+	max-width: 400px;
+	-webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+	background-color: teal;
+	border-radius: 0px 20px 20px 20px;
+	position: relative;
+	margin-right: 10px;
+
+	.itemDetails {
+		display: flex;
+
+		.messageLeft {
+			img {
+				width: 32px;
+				height: 32px;
+				border-radius: 50%;
+				object-fit: cover;
+				border: 1px solid white;
+			}
+		}
+
+		.messageLeft.own {
+			display: none;
+		}
+
+		.messageRight {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			position: relative;
+
+			.deletEdit {
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+				padding: 3px;
+				position: absolute;
+				background-color: white;
+				width: 100px;
+				top: 16px;
+				border-radius: 5px;
+				right: 0;
+				z-index: 1;
+
+				.delItem {
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					font-weight: 600;
+					font-size: 15px;
+					cursor: pointer;
+				}
+
+				.delItem.delete {
+					color: crimson;
+				}
+
+				.delItem.edit {
+					color: teal;
+				}
+			}
+
+			.topSide {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+
+				.username {
+					font-weight: 700;
+					color: white;
+				}
+
+				.username.own {
+					display: none;
+				}
+
+				.messageTime {
+					font-size: 13px;
+					color: white;
+				}
+
+				.you {
+					display: none;
+				}
+
+				.you.own {
+					display: flex;
+					font-weight: 700;
+					color: white;
+				}
+			}
+
+			.topSide.own {
+				align-self: flex-end;
+				margin-right: 20px;
+			}
+
+			.text {
+				background-color: rgb(221, 220, 220);
+				border-radius: 0px 16px 16px 16px;
+				max-width: max-content;
+				text-align: justify;
+				padding: 6px;
+			}
+			.text.own {
+				background-color: #002e94;
+				color: white;
+				border-radius: 16px 0px 16px 16px;
+				opacity: 0.9;
+			}
+
+			.msgTextDiv {
+				width: 100%;
+			}
+		}
+		.messageItem.own {
+			align-self: flex-end;
+		}
+	}
+}
+.messageItem.own {
+	align-self: flex-end;
+	border-radius: 16px 0px 16px 16px;
+	background-color: #002e94;
+}

@@ -1,0 +1,57 @@
+.roomMemberItem {
+	display: flex;
+	align-items: center;
+	gap: 50px;
+	padding: 8px;
+	min-width: 250px;
+
+	&:hover {
+		background-color: rgb(231, 231, 231);
+		color: #002e94;
+		border-radius: 5px;
+	}
+
+	.left {
+		flex: 5;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		cursor: pointer;
+
+		.singleUserDiv {
+			position: relative;
+			display: flex;
+			align-items: center;
+
+			img {
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+				object-fit: cover;
+			}
+
+			.onlineIndicator {
+				position: absolute;
+				background-color: green;
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+				top: 20px;
+				right: -3px;
+			}
+		}
+
+		.user {
+			font-size: 15px;
+			font-weight: 600;
+		}
+	}
+
+	.right {
+		flex: 1;
+		font-size: 13px;
+		border: 0.5px solid #ddd;
+		padding: 3px;
+		border-radius: 3px;
+	}
+}

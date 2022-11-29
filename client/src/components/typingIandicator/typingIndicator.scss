@@ -1,0 +1,53 @@
+.typing-indicator {
+	$ti-color-bg: #e6e7ed;
+	background-color: #e6e7ed;
+	will-change: transform;
+	height: 26px;
+	width: 40px;
+	border-radius: 2px 13px 13px 13px;
+	display: flex;
+	flex-flow: row nowrap;
+	margin: 0 auto;
+	position: relative;
+	animation: 2s bulge infinite ease-out;
+	justify-content: center;
+	align-items: center;
+	span {
+		height: 6px;
+		width: 6px;
+		margin: 0 1px;
+		background-color: #9e9ea1;
+		display: block;
+		border-radius: 50%;
+		opacity: 0.4;
+		@for $i from 1 through 3 {
+			&:nth-of-type(#{$i}) {
+				animation: 1s blink infinite ($i * 0.3333s);
+			}
+		}
+	}
+}
+
+@keyframes blink {
+	50% {
+		opacity: 1;
+	}
+}
+
+@keyframes bulge {
+	50% {
+		transform: scale(1.05);
+	}
+}
+
+// vertically center demo
+html {
+	display: table;
+	height: 100%;
+	width: 100%;
+}
+
+body {
+	display: table-cell;
+	vertical-align: middle;
+}

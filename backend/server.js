@@ -93,6 +93,8 @@ app.use("/api/conversations", conversationRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/roomMessages", roomMessageRoutes);
 
+const __dirname = path.resolve();
+
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static("client/build"));
 

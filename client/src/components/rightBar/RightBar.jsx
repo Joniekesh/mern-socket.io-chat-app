@@ -16,14 +16,22 @@ const RightBar = ({ isRoom, room, friend, onlineUsers }) => {
 								objectFit: "cover",
 								borderRadius: "10px",
 							}}
-							src={"/assets/" + room?.roomImg}
+							src={
+								room?.roomImg
+									? "/assets/" + room?.roomImg
+									: "https://bit.ly/3XMzjAQ"
+							}
 							alt=""
 						/>
 					</div>
 				) : (
 					<div className="imgContainer">
 						<img
-							src={friend?.img}
+							src={
+								friend?.img
+									? "/assets/" + friend?.img
+									: "https://bit.ly/3VlFEBJ"
+							}
 							alt=""
 							style={{
 								width: "100px",

@@ -19,7 +19,6 @@ import {
 	removeUser,
 	getUser,
 	getOnlineUsers,
-	joinRoom,
 } from "./utils/helperFunctions.js";
 
 const app = express();
@@ -42,36 +41,18 @@ io.on("connection", (socket) => {
 		});
 	});
 
-	socket.on("joinRoom", ({ _id, room }) => {
-		const user = getUser(_id);
-		const joinedRoom = getRoom(room._id);
+	socket.on("joinRoom", ({ room, user }) => {
+		const currentUser = getUser(user._id);
 
-		socket.join(joinedRoom._id);
+		socket.join(room);
 
-		socket.emit("roomMessage", {
-			chatImg: "",
-			roomId: joinedRoom._id,
-			text: `${user.fullName}, Welcome to the room ${joinedRoom.roomName}.`,
-			user: {
-				_id: joinedRoom.roomAdmin._id,
-				fullName: joinedRoom.roomAdmin.fullName,
-				img: joinedRoom.roomAdmin.img,
-				userName: joinedRoom.roomAdmin.userName,
-			},
-		});
-
-		socket.broadcast.to(roomName).emit(`roomMessage`, {
-			user: "Admin",
-			text: `${user.fullName} has joined!`,
-		});
+		// socket.emit("roomMessage");
+		console.log(room);
 	});
 
-	socket.on("createRoomMessage", (chatImg, roomId, text, user) => {
-		io.to(roomId).emit("roomMessage", {
-			chatImg,
-			roomId,
-			text,
-			user,
+	socket.on("createRoomMessage", (newMessage) => {
+		io.to(newMessage.roomId).emit("roomMessage", {
+			newMessage,
 		});
 	});
 

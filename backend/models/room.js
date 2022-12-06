@@ -13,8 +13,6 @@ const RoomSchema = new mongoose.Schema(
 		},
 		roomImg: {
 			type: String,
-			default:
-				"https://images.pexels.com/photos/12685803/pexels-photo-12685803.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
 		},
 		members: [
 			{

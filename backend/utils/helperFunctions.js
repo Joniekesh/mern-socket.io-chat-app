@@ -1,5 +1,5 @@
 let onlineUsers = [];
-let rooms = [{}];
+// let rooms = [{}];
 
 const addUser = (_id, socketId, fullName, img, userName) => {
 	const foundUser = onlineUsers.find((user) => user._id === _id);
@@ -22,17 +22,17 @@ const getOnlineUsers = () => {
 	return (users = onlineUsers);
 };
 
-const joinRoom = (_id, room) => {
-	const foundRoom = rooms.find((r) => r._id === room._id);
-	if (!foundRoom.members.includes({ _id })) {
-		foundRoom.members.push({ _id });
-	}
+// const joinRoom = (_id, room) => {
+// 	const foundRoom = rooms.find((r) => r._id === room._id);
+// 	if (!foundRoom.members.includes({ _id })) {
+// 		foundRoom.members.push({ _id });
+// 	}
 
-	rooms.push(foundRoom);
-};
+// 	rooms.push(foundRoom);
+// };
 
-const getRoom = (_id) => {
-	return rooms.find((room) => room._id === _id);
-};
+// const getRoom = (_id) => {
+// 	return rooms.find((room) => room._id === _id);
+// };
 
-export { addUser, removeUser, getUser, getOnlineUsers, joinRoom, getRoom };
+export { addUser, removeUser, getUser, getOnlineUsers };

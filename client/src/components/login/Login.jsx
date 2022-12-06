@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axiosInstance from "../../utils/axiosInstance";
 import Loader from "../loader/Loader";
+import { toast } from "react-toastify";
 
 const Login = () => {
 	const [userName, setUserName] = useState("");
@@ -29,8 +30,10 @@ const Login = () => {
 			});
 			dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
 			res.status === 200 && navigate("/");
+			toast.success("Login Successfull!", { theme: "colored" });
 		} catch (err) {
 			dispatch({ type: "LOGIN_FAILURE", payload: err.response.data.msg });
+			toast.error(error, { theme: "colored" });
 		}
 	};
 
@@ -57,9 +60,6 @@ const Login = () => {
 					/>
 				</div>
 				<button type="submit">{isLoading ? <Loader /> : "Login"}</button>
-				{error && (
-					<span style={{ color: "red", fontWeight: "600" }}>{error}</span>
-				)}
 				<span>
 					Do not have an account?
 					<Link to="/register">

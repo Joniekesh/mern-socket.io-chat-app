@@ -1,5 +1,5 @@
 import "./roomChatBoxItem.scss";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import axiosInstance from "../utils/axiosInstance";
 import { FaEllipsisV } from "react-icons/fa";
@@ -14,6 +14,18 @@ const RoomChatBoxItem = ({
 	setMessages,
 	socket,
 }) => {
+	const [user, setUser] = useState(null);
+	const [open, setOpen] = useState(false);
+
+	const { currentUser } = useContext(AuthContext);
+	const TOKEN = currentUser?.token;
+
+	const config = {
+		headers: {
+			Authorization: `Bearer ${TOKEN}`,
+		},
+	};
+
 	const isValidHttpUrl = (string) => {
 		let url;
 		try {
@@ -26,16 +38,17 @@ const RoomChatBoxItem = ({
 	// console.log("http://example.com: " + isValidHttpUrl("https://example.com"));
 	// console.log("example.com: " + isValidHttpUrl("example.com"));
 
-	const [open, setOpen] = useState(false);
-
-	const { currentUser } = useContext(AuthContext);
-	const TOKEN = currentUser?.token;
-
-	const config = {
-		headers: {
-			Authorization: `Bearer ${TOKEN}`,
-		},
-	};
+	useEffect(() => {
+		const fetchUser = async () => {
+			try {
+				const res = await axiosInstance.get(`/users/${message.user}`, config);
+				setUser(res.data);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		fetchUser();
+	}, [message.user]);
 
 	const handleDelete = async (messageId) => {
 		try {
@@ -44,15 +57,14 @@ const RoomChatBoxItem = ({
 				config
 			);
 			setMessages(messages.filter((message) => message._id !== messageId));
+			setOpen(false);
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
 	return (
-		<div
-			className={own === message.user?._id ? "messageItem own" : "messageItem"}
-		>
+		<div className={own === message.user ? "messageItem own" : "messageItem"}>
 			<div className="itemDetails">
 				{open && (
 					<div className="deletEdit">
@@ -70,30 +82,30 @@ const RoomChatBoxItem = ({
 					</div>
 				)}
 				<div
-					className={
-						own === message.user?._id ? "messageLeft own" : "messageLeft"
-					}
+					className={own === message.user ? "messageLeft own" : "messageLeft"}
 				>
-					<img src={message.user?.img} alt="" />
+					<img
+						src={user?.img ? "/assets/" + user?.img : "https://bit.ly/3VlFEBJ"}
+						alt=""
+					/>
 				</div>
 				<div className="messageRight">
-					<div
-						className={own === message.user?._id ? "topSide own" : "topSide"}
-					>
+					<div className={own === message.user ? "topSide own" : "topSide"}>
 						<span
-							className={
-								own === message.user?._id ? "username own" : "username"
-							}
+							className={own === message.user ? "username own" : "username"}
 						>
-							{message.user?.fullName}
+							{user?.fullName}
 						</span>
-						<span className="messageTime">
+						<span
+							className="messageTime"
+							style={{ fontSize: "12px", color: "orange", fontWeight: "600" }}
+						>
 							{new Date(message.createdAt).toLocaleString()}
 						</span>
-						<span className={own === message.user?._id ? "you own" : "you"}>
+						<span className={own === message.user ? "you own" : "you"}>
 							You
 						</span>
-						{message.user?._id === currentUser.user?._id && (
+						{message.user === currentUser.user?._id && (
 							<span>
 								<FaEllipsisV
 									style={{
@@ -122,16 +134,14 @@ const RoomChatBoxItem = ({
 						{message.text &&
 							(isValidHttpUrl(message.text) ? (
 								<a href={message.text}>
-									<p
-										className={own === message.user?._id ? "text own" : "text"}
-									>
+									<p className={own === message.user ? "text own" : "text"}>
 										{message.text.substring(0, 27)}
 										<br></br>
 										{message.text.substring(27)}
 									</p>
 								</a>
 							) : (
-								<p className={own === message.user?._id ? "text own" : "text"}>
+								<p className={own === message.user ? "text own" : "text"}>
 									{message.text}
 								</p>
 							))}

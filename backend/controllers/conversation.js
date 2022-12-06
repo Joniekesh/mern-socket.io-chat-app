@@ -70,3 +70,23 @@ export const getConversationOfTwoUsers = async (req, res) => {
 		res.status(500).json(err);
 	}
 };
+
+// @desc   Delete Conversation By Id
+// @route  GET /api/conversations/:id
+// @access Private
+export const deleteConversation = async (req, res) => {
+	try {
+		await Conversation.findByIdAndDelete(req.params.id);
+
+		res.status(200).json({ msg: "user unfollowed" });
+		// const conversation = await Conversation.find({
+		// 	members: { $all: [req.params.first, req.params.second] },
+		// });
+		// if (conversation.members.includes(req.user.id)) {
+		// 	await Conversation.findByIdAndDelete(req.params.id);
+		// 	return res.status(200).json({ msg: "Conversation deleted" });
+		// }
+	} catch (err) {
+		res.status(500).json(err);
+	}
+};

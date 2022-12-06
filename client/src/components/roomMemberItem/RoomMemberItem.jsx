@@ -1,21 +1,20 @@
 import "./roomMemberItem.scss";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 import { AuthContext } from "../../context/AuthContext";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const RoommemberItem = ({ id, room, members, onlineUsers }) => {
+const RoommemberItem = ({ id, room, setRoom }) => {
 	const [myFriend, setMyFriend] = useState({});
 	const [conversation, setConversation] = useState([]);
-	const { currentUser } = useContext(AuthContext);
-	const [roomMembers, setRoomMembers] = useState(members);
+	const { currentUser, onlineUsers } = useContext(AuthContext);
 	const TOKEN = currentUser?.token;
 	const user = currentUser?.user;
 
-	const isOnline =
-		onlineUsers.some((user) => user.userId === myFriend._id) ||
-		onlineUsers.some((user) => user.userId === user._id);
+	const isOnline = onlineUsers?.some((ou) => ou._id === myFriend._id);
+
+	const myId = room.memmbers?.find(({ _id }) => _id == user._id);
+	console.log(myId);
 
 	const navigate = useNavigate();
 
@@ -65,14 +64,13 @@ const RoommemberItem = ({ id, room, members, onlineUsers }) => {
 					config
 				);
 				navigate(`/friend/${res.data._id}`, { state: { myFriend } });
-				window.location.replace(`/friend/${res.data._id}`);
 			} catch (error) {
 				console.log(error);
 			}
 		}
 	};
 
-	const handleRemove = async () => {
+	const handleRemove = async (id) => {
 		try {
 			if (window.confirm("Are you SURE? This CANNOT be UNDONE!")) {
 				const res = await axiosInstance.put(
@@ -81,9 +79,7 @@ const RoommemberItem = ({ id, room, members, onlineUsers }) => {
 					config
 				);
 				res.status === 200 &&
-					setRoomMembers(
-						roomMembers?.filter(({ _id }) => _id !== myFriend._id)
-					);
+					setRoom(room?.members?.filter(({ _id }) => _id !== id));
 			}
 		} catch (error) {
 			console.log(error);
@@ -92,9 +88,20 @@ const RoommemberItem = ({ id, room, members, onlineUsers }) => {
 
 	return (
 		<div className="roomMemberItem">
-			<div className="left" onClick={handleClick}>
+			<div
+				className="left"
+				onClick={handleClick}
+				disabled={room.roomAdmin._id === user._id}
+			>
 				<div className="singleUserDiv">
-					<img src={myFriend?.img} alt="" />
+					<img
+						src={
+							myFriend?.img
+								? "/assets/" + myFriend?.img
+								: "https://bit.ly/3VlFEBJ"
+						}
+						alt=""
+					/>
 					{isOnline && user && <span className="onlineIndicator"></span>}
 				</div>
 				<div className="user">{myFriend?.fullName}</div>
@@ -104,7 +111,7 @@ const RoommemberItem = ({ id, room, members, onlineUsers }) => {
 			) : (
 				room.roomAdmin._id === currentUser?.user._id && (
 					<span
-						onClick={handleRemove}
+						onClick={() => handleRemove(myFriend._id)}
 						className="right"
 						style={{
 							fontSize: "12px",

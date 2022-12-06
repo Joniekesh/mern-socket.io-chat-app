@@ -16,9 +16,9 @@ import UserModal from "../userModal/UserModal";
 import { useNavigate, Link } from "react-router-dom";
 import UserListItem from "../userListitem/UserListItem";
 import Loader from "../loader/Loader";
+import { ProfileContext } from "../../context/ProfileContext";
 
-const LeftBar = ({ isRoom, setIsRoom, onlineUsers, socket }) => {
-	const [profile, setProfile] = useState(null);
+const LeftBar = ({ isRoom, setIsRoom, socket }) => {
 	const [rooms, setRooms] = useState([]);
 	const [friends, setFriends] = useState([]);
 	const [roomLoading, setRoomLoading] = useState(false);
@@ -43,17 +43,22 @@ const LeftBar = ({ isRoom, setIsRoom, onlineUsers, socket }) => {
 
 	const otherUsers = users.filter((user) => user._id !== currentUser?.user._id);
 
+	const { currentProfile, dispatch: profileDispatch } =
+		useContext(ProfileContext);
+
 	useEffect(() => {
 		const fetchProfile = async () => {
+			profileDispatch({ type: "GET_PROFILE_REQUEST" });
 			try {
 				const res = await axiosInstance.get("/auth/me", config);
-				setProfile(res.data);
+				profileDispatch({ type: "GET_PROFILE_SUCCESS", payload: res.data });
 			} catch (error) {
+				profileDispatch({ type: "GET_PROFILE_FAILURE" });
 				console.log(error);
 			}
 		};
 		fetchProfile();
-	}, []);
+	}, [profileDispatch]);
 
 	useEffect(() => {
 		const fetchRooms = async () => {
@@ -77,8 +82,8 @@ const LeftBar = ({ isRoom, setIsRoom, onlineUsers, socket }) => {
 				const res = await axiosInstance.get("/conversations", config);
 				setFriends(res.data);
 				setFriendLoading(false);
-			} catch (err) {
-				console.log(err.response.msg);
+			} catch (error) {
+				console.log(error);
 				setFriendLoading(false);
 			}
 		};
@@ -133,7 +138,14 @@ const LeftBar = ({ isRoom, setIsRoom, onlineUsers, socket }) => {
 						</button>
 					)}
 					<div className="userDetail" style={{ position: "relative" }}>
-						<img src={profile?.img} alt="" />
+						<img
+							src={
+								currentProfile?.img
+									? "/assets/" + currentProfile?.img
+									: "https://bit.ly/3VlFEBJ"
+							}
+							alt=""
+						/>
 						<span
 							className="onlineIndicator"
 							style={{
@@ -195,11 +207,7 @@ const LeftBar = ({ isRoom, setIsRoom, onlineUsers, socket }) => {
 						{otherUsers
 							.filter((user) => user.fullName.toLowerCase().includes(query))
 							.map((user) => (
-								<UserListItem
-									user={user}
-									key={user._id}
-									onlineUsers={onlineUsers}
-								/>
+								<UserListItem user={user} key={user._id} />
 							))}
 					</ul>
 				)
@@ -214,7 +222,6 @@ const LeftBar = ({ isRoom, setIsRoom, onlineUsers, socket }) => {
 					friends={friends}
 					setIsRoom={setIsRoom}
 					friendLoading={friendLoading}
-					onlineUsers={onlineUsers}
 				/>
 			)}
 

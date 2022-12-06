@@ -4,6 +4,7 @@ import {
 	getConversations,
 	getConversationById,
 	getConversationOfTwoUsers,
+	deleteConversation,
 } from "../controllers/conversation.js";
 import { verifyToken } from "../middleware/auth.js";
 const router = express.Router();
@@ -16,5 +17,6 @@ router.get(
 	verifyToken,
 	getConversationOfTwoUsers
 );
+router.delete("/:id", verifyToken, deleteConversation);
 
 export default router;

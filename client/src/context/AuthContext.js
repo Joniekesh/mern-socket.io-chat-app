@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useEffect, useReducer, useState } from "react";
 
 export const AuthContext = createContext();
 
@@ -47,6 +47,8 @@ const AuthReducer = (state, action) => {
 
 export const AuthContextProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(AuthReducer, initialState);
+	const [currentChat, setCurrentChat] = useState(false);
+	const [onlineUsers, setOnlineUsers] = useState([]);
 
 	useEffect(() => {
 		localStorage.setItem("currentUser", JSON.stringify(state.currentUser));
@@ -59,6 +61,10 @@ export const AuthContextProvider = ({ children }) => {
 				isLoading: state.isLoading,
 				error: state.error,
 				dispatch,
+				currentChat,
+				setCurrentChat,
+				onlineUsers,
+				setOnlineUsers,
 			}}
 		>
 			{children}

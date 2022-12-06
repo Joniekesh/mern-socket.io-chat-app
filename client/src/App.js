@@ -12,15 +12,16 @@ import Register from "./components/register/Register";
 import Login from "./components/login/Login";
 import { AuthContext } from "./context/AuthContext";
 import { io } from "socket.io-client";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
-	const [onlineUsers, setOnlineUsers] = useState([]);
 	const [socket, setSocket] = useState(null);
 	const [isRoom, setIsRoom] = useState(false);
 	const [friendOpen, setFriendOpen] = useState(false);
 	const [roomOpen, setRoomOpen] = useState(false);
 
-	const { currentUser, isLoading } = useContext(AuthContext);
+	const { currentUser, isLoading, setOnlineUsers } = useContext(AuthContext);
 	const user = currentUser?.user;
 
 	const Private = ({ children }) => {
@@ -51,6 +52,7 @@ const App = () => {
 			<div className="circle"></div>
 			<div className="circle2"></div>
 			<Router>
+				<ToastContainer position="bottom-center" />
 				<Routes>
 					<Route path="/register" element={<Register />}></Route>
 					<Route path="/login" element={<Login />}></Route>
@@ -58,11 +60,7 @@ const App = () => {
 						index
 						element={
 							<Private>
-								<Home
-									isRoom={isRoom}
-									setIsRoom={setIsRoom}
-									onlineUsers={onlineUsers}
-								/>
+								<Home isRoom={isRoom} setIsRoom={setIsRoom} />
 							</Private>
 						}
 					></Route>
@@ -75,7 +73,6 @@ const App = () => {
 									setIsRoom={setIsRoom}
 									roomOpen={roomOpen}
 									setRoomOpen={setRoomOpen}
-									onlineUsers={onlineUsers}
 									socket={socket}
 								/>
 							</Private>
@@ -92,7 +89,6 @@ const App = () => {
 									friendOpen={friendOpen}
 									setFriendOpen={setFriendOpen}
 									socket={socket}
-									onlineUsers={onlineUsers}
 								/>
 							</Private>
 						}

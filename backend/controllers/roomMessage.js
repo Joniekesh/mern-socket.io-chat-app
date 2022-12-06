@@ -17,7 +17,7 @@ export const addMessage = async (req, res) => {
 
 		if (roomMember) {
 			const savedMessage = await newMessage.save();
-			return res.status(200).json(savedMessage);
+			return res.status(201).json(savedMessage);
 		} else {
 			return res
 				.status(401)
@@ -44,10 +44,7 @@ export const getRoomMessages = async (req, res) => {
 		if (roomMember) {
 			const messages = await RoomMessage.find({
 				roomId: req.params.id,
-			})
-				.sort({ createdAt: 1 })
-				.populate("user", ["_id", "fullName", "img", "userName"]);
-
+			}).sort({ createdAt: 1 });
 			res.status(200).json(messages);
 		} else {
 			return res

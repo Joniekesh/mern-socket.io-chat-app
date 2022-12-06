@@ -3,17 +3,13 @@ import LeftBar from "../../components/leftBar/LeftBar";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
-const Home = ({ isRoom, setIsRoom, onlineUsers }) => {
+const Home = ({ isRoom, setIsRoom }) => {
 	const { currentUser } = useContext(AuthContext);
 
 	return (
 		<div className="home">
 			<div className="homeContainer">
-				<LeftBar
-					isRoom={isRoom}
-					setIsRoom={setIsRoom}
-					onlineUsers={onlineUsers}
-				/>
+				<LeftBar isRoom={isRoom} setIsRoom={setIsRoom} />
 				<div className="welcome">
 					<div className="welcomeDetails">
 						<span style={{ fontSize: "30px", color: "teal" }}>

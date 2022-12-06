@@ -3,13 +3,15 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { AuthContextProvider } from "./context/AuthContext";
-import { AlertContextProvider } from "./context/AlertContext";
+import { ProfileContextProvider } from "./context/ProfileContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	// <React.StrictMode>
-	<AuthContextProvider>
-		<App />
-	</AuthContextProvider>
+	<ProfileContextProvider>
+		<AuthContextProvider>
+			<App />
+		</AuthContextProvider>
+	</ProfileContextProvider>
 	// </React.StrictMode>
 );

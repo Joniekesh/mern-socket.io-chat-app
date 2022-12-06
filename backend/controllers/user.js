@@ -24,7 +24,7 @@ export const getUser = async (req, res) => {
 // @route  PUT /api/users/me
 // @access Private
 export const updateUser = async (req, res) => {
-	const { fullName, email, phone, password, img } = req.body;
+	const { fullName, email, phone, password, img, bio } = req.body;
 
 	const salt = bcrypt.genSaltSync(10);
 	const hash = bcrypt.hashSync(password, salt);
@@ -37,6 +37,7 @@ export const updateUser = async (req, res) => {
 			user.email = email || user.email;
 			user.phone = phone || user.phone;
 			user.img = img || user.img;
+			user.bio = bio || user.bio;
 
 			if (password) {
 				user.password = hash;

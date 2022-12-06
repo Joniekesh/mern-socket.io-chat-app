@@ -12,14 +12,7 @@ import SendMessage from "../../sendMessage/SendMessage";
 import Loader from "../../components/loader/Loader";
 import RoomDetails from "../../components/roomDetails/RoomDetails";
 
-const RoomChat = ({
-	isRoom,
-	setIsRoom,
-	roomOpen,
-	setRoomOpen,
-	onlineUsers,
-	socket,
-}) => {
+const RoomChat = ({ isRoom, setIsRoom, setRoomOpen, socket }) => {
 	const [loading, setLoading] = useState(false);
 	const { id } = useParams();
 	const scrollRef = useRef();
@@ -27,12 +20,27 @@ const RoomChat = ({
 
 	const [messages, setMessages] = useState([]);
 	const [room, setRoom] = useState({});
+	const [openModal, setOpenModal] = useState(false);
 
 	const [arrivalMessage, setArrivalMessage] = useState(null);
 
-	const { currentUser } = useContext(AuthContext);
+	const { currentUser, currentChat, setCurrentChat } = useContext(AuthContext);
 	const TOKEN = currentUser?.token;
 	const own = currentUser?.user._id;
+
+	const [width, setWidth] = useState(window.innerWidth);
+	const [height, setHeight] = useState(window.innerHeight);
+
+	const updateDimensions = () => {
+		setWidth(window.innerWidth);
+		setHeight(window.innerHeight);
+	};
+	useEffect(() => {
+		window.addEventListener("resize", updateDimensions);
+		return () => window.removeEventListener("resize", updateDimensions);
+	}, []);
+
+	const mobile = width <= 600;
 
 	const config = {
 		headers: {
@@ -42,21 +50,14 @@ const RoomChat = ({
 
 	useEffect(() => {
 		socket?.on("roomMessage", (data) => {
-			setArrivalMessage({
-				chatImg: data.chatImg,
-				roomId: data.roomId,
-				text: data.text,
-				user: data.user,
-				createdAt: Date.now(),
-			});
+			setArrivalMessage(data);
 		});
 	}, []);
-
 	console.log(arrivalMessage);
 
 	useEffect(() => {
 		arrivalMessage &&
-			room?.members.includes({ _id: arrivalMessage.user._id }) &&
+			room?.members.includes({ _id: arrivalMessage.user }) &&
 			setMessages((prev) => [...prev, arrivalMessage]);
 	}, [arrivalMessage, room]);
 
@@ -104,7 +105,8 @@ const RoomChat = ({
 	}, [messages]);
 
 	const handleNavigate = () => {
-		navigate("/");
+		navigate(-1);
+		setCurrentChat(false);
 	};
 
 	const handleLeave = async () => {
@@ -126,19 +128,30 @@ const RoomChat = ({
 		}
 	};
 
+	const handleModal = () => {
+		setOpenModal(true);
+	};
+
 	return (
 		<div className="roomChat">
 			<div className="roomChatContainer">
-				{roomOpen ? (
+				{openModal ? (
 					<RoomDetails
-						setRoomOpen={setRoomOpen}
+						setOpenModal={setOpenModal}
 						room={room}
-						onlineUsers={onlineUsers}
+						setRoom={setRoom}
 					/>
 				) : (
-					<LeftBar isRoom={isRoom} setIsRoom={setIsRoom} socket={socket} />
+					!currentChat &&
+					!mobile === true && (
+						<LeftBar isRoom={isRoom} setIsRoom={setIsRoom} socket={socket} />
+					)
 				)}
-				<div className="chatBox">
+				<div
+					className={
+						mobile === true && currentChat ? "chatBox mobile" : "chatBox"
+					}
+				>
 					<div className="top">
 						<div className="left">
 							<ImArrowLeft2
@@ -158,7 +171,11 @@ const RoomChat = ({
 							>
 								<div className="imgDiv">
 									<img
-										src={"/assets/" + room?.roomImg || room?.roomImg}
+										src={
+											room?.roomImg
+												? "/assets/" + room?.roomImg
+												: "https://bit.ly/3XMzjAQ"
+										}
 										alt=""
 									/>
 								</div>
@@ -166,6 +183,7 @@ const RoomChat = ({
 								<span
 									className="roomName"
 									style={{ fontWeight: "700", color: "#150050" }}
+									onClick={handleModal}
 								>
 									{room.roomName}
 								</span>

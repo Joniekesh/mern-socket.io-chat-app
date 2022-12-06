@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axiosInstace from "../../utils/axiosInstance";
 import Loader from "../loader/Loader";
+import { toast } from "react-toastify";
 
 const Register = () => {
 	const [inputs, setInputs] = useState({
@@ -32,15 +33,17 @@ const Register = () => {
 		e.preventDefault();
 
 		if (inputs.password !== inputs.confirmPassword) {
-			alert("Passwords do not match");
+			toast.error("Passwords do not match", { theme: "colored" });
 		} else {
 			dispatch({ type: "REGISTER_REQUEST" });
 			try {
 				const res = await axiosInstace.post("/auth", inputs);
 				dispatch({ type: "REGISTER_SUCCESS", payload: res.data });
+				toast.success("Register Successful!", { theme: "colored" });
 				res.status === 201 && navigate("/login");
 			} catch (err) {
 				dispatch({ type: "REGISTER_FAILURE", payload: err.response.data.msg });
+				toast.error(error, { theme: "colored" });
 			}
 		}
 	};
@@ -95,6 +98,7 @@ const Register = () => {
 						placeholder="Enter password"
 						name="password"
 						onChange={handleChange}
+						required
 					/>
 				</div>
 				<div className="inputGroup">

@@ -1,17 +1,32 @@
 import "./sideBarRoomListItem.scss";
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import { AuthContext } from "../../context/AuthContext";
 
 const SideBarRoomListItem = ({ room }) => {
 	const [messages, setMessages] = useState([]);
+	const [width, setWidth] = useState(window.innerWidth);
+	const [height, setHeight] = useState(window.innerHeight);
+
+	const updateDimensions = () => {
+		setWidth(window.innerWidth);
+		setHeight(window.innerHeight);
+	};
+	useEffect(() => {
+		window.addEventListener("resize", updateDimensions);
+		return () => window.removeEventListener("resize", updateDimensions);
+	}, []);
+
+	const mobile = width <= 600;
+
+	const navigagte = useNavigate();
 
 	const lastMessage = messages.sort(
 		(a, b) => new Date(b.createdAt) - new Date(a.createdAt)
 	);
 
-	const { currentUser } = useContext(AuthContext);
+	const { currentUser, setCurrentChat } = useContext(AuthContext);
 	const TOKEN = currentUser?.token;
 
 	const config = {
@@ -35,15 +50,24 @@ const SideBarRoomListItem = ({ room }) => {
 		fetchMessages();
 	}, [room._id]);
 
+	const handleNavigate = () => {
+		navigagte(`/room/${room._id}`);
+		setCurrentChat(true);
+	};
+
 	return (
-		<Link
-			to={`/room/${room._id}`}
-			style={{ textDecoration: "none", color: "inherit" }}
-		>
+		<div onClick={handleNavigate}>
 			<div className="listItem">
 				<div className="left">
 					<div className="imageDiv">
-						<img src={"/assets/" + room?.roomImg || room?.roomImg} alt="" />
+						<img
+							src={
+								room?.roomImg
+									? "/assets/" + room?.roomImg
+									: "https://bit.ly/3XMzjAQ"
+							}
+							alt=""
+						/>
 					</div>
 					<div className="textDiv">
 						<span className="roomName">{room?.roomName}</span>
@@ -57,7 +81,7 @@ const SideBarRoomListItem = ({ room }) => {
 				</div>
 				<div className="right">3</div>
 			</div>
-		</Link>
+		</div>
 	);
 };
 

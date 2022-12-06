@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axiosInstance from "../../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const CreateRoom = ({ setIsCreateRoom }) => {
 	const [roomName, setRoomName] = useState("");
@@ -29,32 +30,39 @@ const CreateRoom = ({ setIsCreateRoom }) => {
 
 		try {
 			const res = await axiosInstance.post("/rooms", newRoom, config);
-			setIsCreateRoom(false);
-			setCreatedRoom(res.data);
-			res.status === 201 && navigate(`/room/${res.data._id}`);
+
+			if (res.status === 201) {
+				setCreatedRoom(res.data);
+				setIsCreateRoom(false);
+				navigate(`/room/${res.data._id}`);
+				toast.success("Room successfully created", { theme: "colored" });
+			}
 		} catch (error) {
 			console.log(error);
+			toast.error("Error occured", { theme: "colored" });
 		}
 	};
 
 	return (
-		<div className="createRoom">
-			<form onSubmit={submitHandler}>
-				<input
-					type="text"
-					placeholder="Create room"
-					onChange={(e) => setRoomName(e.target.value)}
-					required
-				/>
-				<div className="buttons">
-					<button className="cancel" onClick={() => setIsCreateRoom(false)}>
-						CANCEL
-					</button>
-					<button type="submit" className="create">
-						CREATE
-					</button>
-				</div>
-			</form>
+		<div className="main">
+			<div className="createRoom">
+				<form onSubmit={submitHandler}>
+					<input
+						type="text"
+						placeholder="Create room"
+						onChange={(e) => setRoomName(e.target.value)}
+						required
+					/>
+					<div className="buttons">
+						<button className="cancel" onClick={() => setIsCreateRoom(false)}>
+							CANCEL
+						</button>
+						<button type="submit" className="create">
+							CREATE
+						</button>
+					</div>
+				</form>
+			</div>
 		</div>
 	);
 };

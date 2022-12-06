@@ -18,8 +18,6 @@ const UserSchema = new mongoose.Schema(
 		},
 		img: {
 			type: String,
-			default:
-				"http://res.cloudinary.com/joniekesh/image/upload/v1657122047/upload/qw8fkm9pirbdlmyeeefp.jpg",
 		},
 		phone: {
 			type: String,
@@ -28,6 +26,10 @@ const UserSchema = new mongoose.Schema(
 		password: {
 			type: String,
 			required: true,
+		},
+		bio: {
+			type: String,
+			maxlength: 100,
 		},
 		isAdmin: {
 			type: Boolean,

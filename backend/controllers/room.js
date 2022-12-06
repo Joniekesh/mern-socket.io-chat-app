@@ -78,10 +78,7 @@ export const joinRoom = async (req, res) => {
 				{ $push: { members: { _id: req.body.userId } } },
 				{ new: true }
 			);
-			return res.status(200).json({
-				msg: `You have successfully joined ${updatedRoom.roomName} Room`,
-				updatedRoom,
-			});
+			return res.status(200).json(updatedRoom);
 		} else {
 			return res.status(200).json(room);
 		}

@@ -5,16 +5,14 @@ import { AuthContext } from "../../context/AuthContext";
 import axiosInstance from "../../utils/axiosInstance";
 import { FaCheck } from "react-icons/fa";
 
-const UserListItem = ({ user: myFriend, onlineUsers }) => {
+const UserListItem = ({ user: myFriend }) => {
 	const [conversation, setConversation] = useState([]);
 	const navigate = useNavigate();
 
-	const isOnlineUser = onlineUsers?.some(
-		(user) => user.userId === myFriend._id
-	);
-
-	const { currentUser } = useContext(AuthContext);
+	const { currentUser, onlineUsers } = useContext(AuthContext);
 	const TOKEN = currentUser?.token;
+
+	const isOnlineUser = onlineUsers?.some((user) => user._id === myFriend._id);
 
 	const config = {
 		headers: {
@@ -58,7 +56,14 @@ const UserListItem = ({ user: myFriend, onlineUsers }) => {
 		<li className="usersListitem" key={myFriend._id} onClick={handleClick}>
 			<div className="left">
 				<div className="imgDiv">
-					<img src={myFriend.img} alt="" />
+					<img
+						src={
+							myFriend.img
+								? "/assets/" + myFriend.img
+								: "https://bit.ly/3VlFEBJ"
+						}
+						alt=""
+					/>
 					{isOnlineUser && <span className="onlineIndicator"></span>}
 				</div>
 				<span>{myFriend.fullName}</span>

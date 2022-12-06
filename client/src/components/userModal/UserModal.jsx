@@ -1,16 +1,14 @@
-import { useEffect } from "react";
-import { useState } from "react";
-import { useContext } from "react";
+import "./userModal.scss";
+import { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { ProfileContext } from "../../context/ProfileContext";
 import axiosInstance from "../../utils/axiosInstance";
-import "./userModal.scss";
 
 const UserModal = ({ setOpen }) => {
 	const [edit, setEdit] = useState(false);
-	const [profile, setProfile] = useState(null);
 
-	const { currentUser, dispatch } = useContext(AuthContext);
+	const { currentUser } = useContext(AuthContext);
 	const user = currentUser?.user;
 	const TOKEN = currentUser?.token;
 
@@ -19,6 +17,7 @@ const UserModal = ({ setOpen }) => {
 	const [phone, setPhone] = useState("");
 	const [file, setFile] = useState("");
 	const [password, setPassword] = useState("");
+	const [bio, setBio] = useState("");
 
 	const config = {
 		headers: {
@@ -27,13 +26,18 @@ const UserModal = ({ setOpen }) => {
 		},
 	};
 
+	const { dispatch: profileDispatch, currentProfile } =
+		useContext(ProfileContext);
+
 	useEffect(() => {
 		const fetchProfile = async () => {
+			profileDispatch({ type: "GET_PROFILE_REQUEST" });
 			try {
 				const res = await axiosInstance.get("/auth/me", config);
-				setProfile(res.data);
+				profileDispatch({ type: "GET_PROFILE_SUCCESS", payload: res.data });
 			} catch (error) {
 				console.log(error);
+				profileDispatch({ type: "GET_PROFILE_FAILURE" });
 			}
 		};
 		fetchProfile();
@@ -56,37 +60,45 @@ const UserModal = ({ setOpen }) => {
 				phone,
 				email,
 				password,
+				bio,
 				img: file ? url : "",
 			};
 
-			const res = await axiosInstance.put("/users/me", updatedUser, config);
-			res.status === 200 && window.location.reload();
-			console.log(res.data);
+			profileDispatch({ type: "UPDATE_PROFILE_REQUEST" });
+
+			try {
+				const res = await axiosInstance.put("/users/me", updatedUser, config);
+				profileDispatch({ type: "UPDATE_PROFILE_SUCCESS", payload: res.data });
+				setOpen(false);
+			} catch (error) {
+				console.log(error);
+				profileDispatch({ type: "UPDATE_PROFILE_FAILURE" });
+			}
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
 	const navigate = useNavigate();
-	const deleteUser = async () => {
-		const config = {
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${TOKEN}`,
-			},
-		};
+	// const deleteUser = async () => {
+	// 	const config = {
+	// 		headers: {
+	// 			"Content-Type": "application/json",
+	// 			Authorization: `Bearer ${TOKEN}`,
+	// 		},
+	// 	};
 
-		try {
-			if (window.confirm("Are ypu SURE? This cannot be undone!")) {
-				const res = await axiosInstance.delete("/users/me", config);
-				dispatch({ type: "DELETE_USER" });
-				window.location.reload();
-				res.status === 200 && navigate("/login");
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	};
+	// 	try {
+	// 		if (window.confirm("Are ypu SURE? This cannot be undone!")) {
+	// 			const res = await axiosInstance.delete("/users/me", config);
+	// 			dispatch({ type: "DELETE_USER" });
+	// 			window.location.reload();
+	// 			res.status === 200 && navigate("/login");
+	// 		}
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// };
 
 	return (
 		<div className="userModal">
@@ -118,22 +130,32 @@ const UserModal = ({ setOpen }) => {
 							/>
 						</div>
 					) : (
-						<img src={profile?.img} alt="" />
+						<div className="imgDiv">
+							<img
+								src={
+									currentProfile?.img
+										? "/assets/" + currentProfile?.img
+										: "https://bit.ly/3VlFEBJ"
+								}
+								alt=""
+							/>
+							<span className="onlineIndicator"></span>
+						</div>
 					)}
 					{edit ? (
 						<div className="inputGroup">
 							<label>Full Name:</label>
 							<input
 								type="text"
-								defaultValue={profile?.fullName}
+								defaultValue={currentProfile?.fullName}
 								onChange={(e) => setFullName(e.target.value)}
 							/>
 						</div>
 					) : (
 						<div className="userInfo">
-							<span>Full Name: </span>
+							<span className="userInfoTitle">Full Name: </span>
 							<span className="desc">
-								{profile?.fullName} ({profile?.userName})
+								{currentProfile?.fullName} ({currentProfile?.userName})
 							</span>
 						</div>
 					)}
@@ -142,14 +164,14 @@ const UserModal = ({ setOpen }) => {
 							<label>Email:</label>
 							<input
 								type="email"
-								defaultValue={profile?.email}
+								defaultValue={currentProfile?.email}
 								onChange={(e) => setEmail(e.target.value)}
 							/>
 						</div>
 					) : (
 						<div className="userInfo">
-							<span>Email: </span>
-							<span className="desc">{profile?.email}</span>
+							<span className="userInfoTitle">Email: </span>
+							<span className="desc">{currentProfile?.email}</span>
 						</div>
 					)}
 					{edit ? (
@@ -157,16 +179,16 @@ const UserModal = ({ setOpen }) => {
 							<label>Phone:</label>
 							<input
 								type="text"
-								defaultValue={profile?.phone}
+								defaultValue={currentProfile?.phone}
 								onChange={(e) => setPhone(e.target.value)}
 							/>
 						</div>
 					) : (
 						<div className="userInfo">
-							{profile?.phone && (
+							{currentProfile?.phone && (
 								<>
-									<span>Phone: </span>
-									<span className="desc">{profile?.phone}</span>
+									<span className="userInfoTitle">Phone: </span>
+									<span className="desc">{currentProfile?.phone}</span>
 								</>
 							)}
 						</div>
@@ -179,6 +201,21 @@ const UserModal = ({ setOpen }) => {
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 							/>
+						</div>
+					)}
+					{edit ? (
+						<div className="inputGroup">
+							<label>Bio:</label>
+							<input
+								type="text"
+								defaultValue={currentProfile?.bio}
+								onChange={(e) => setBio(e.target.value)}
+							/>
+						</div>
+					) : (
+						<div className="userInfo">
+							<span className="userInfoTitle">Bio: </span>
+							<span className="desc">{currentProfile?.bio}</span>
 						</div>
 					)}
 
@@ -197,9 +234,7 @@ const UserModal = ({ setOpen }) => {
 						</div>
 					)}
 				</form>
-				<button className="deleteAccount" onClick={deleteUser}>
-					DELETE ACCOUNT
-				</button>
+				<button className="deleteAccount">DELETE ACCOUNT</button>
 			</div>
 		</div>
 	);

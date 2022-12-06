@@ -9,7 +9,14 @@ const RoomListItem = ({ room }) => {
 			<div className="listItem">
 				<div className="left">
 					<div className="imageDiv">
-						<img src={"/assets/" + room?.roomImg} alt="" />
+						<img
+							src={
+								room?.roomImg
+									? "/assets/" + room?.roomImg
+									: "https://bit.ly/3XMzjAQ"
+							}
+							alt=""
+						/>
 					</div>
 					<span className="friendsName">{room?.roomName}</span>
 				</div>

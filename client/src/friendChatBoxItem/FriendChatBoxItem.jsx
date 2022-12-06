@@ -18,7 +18,7 @@ const FriendChatBoxItem = ({
 	const [open, setOpen] = useState(false);
 	const [user, setUser] = useState(null);
 	const [roomId, setRoomId] = useState(null);
-	const [room, setRoom] = useState(null);
+	// const [room, setRoom] = useState(null);
 
 	const { currentUser } = useContext(AuthContext);
 	const TOKEN = currentUser?.token;
@@ -68,17 +68,17 @@ const FriendChatBoxItem = ({
 		}
 	}, [message.text, roomId]);
 
-	useEffect(() => {
-		const fetchRoom = async () => {
-			try {
-				const res = await axiosInstance.get(`/rooms/${roomId}`, config);
-				res.status === 200 && setRoom(res.data);
-			} catch (err) {
-				console.log(err);
-			}
-		};
-		fetchRoom();
-	}, [roomId]);
+	// useEffect(() => {
+	// 	const fetchRoom = async () => {
+	// 		try {
+	// 			const res = await axiosInstance.get(`/rooms/${roomId}`, config);
+	// 			res.status === 200 && setRoom(res.data);
+	// 		} catch (err) {
+	// 			console.log(err);
+	// 		}
+	// 	};
+	// 	fetchRoom();
+	// }, [roomId]);
 
 	const joinRoom = async () => {
 		const config = {
@@ -90,19 +90,20 @@ const FriendChatBoxItem = ({
 
 		try {
 			const res = await axiosInstance.put(
-				`/rooms/${room._id}`,
+				`/rooms/${roomId}`,
 				{ userId: currentUser?.user._id },
 				config
 			);
 			res.status === 200 && navigate(`/room/${res.data._id}`);
+
+			socket.emit("joinRoom", {
+				room: res.data,
+				user: currentUser?.user,
+			});
+			console.log(res.data);
 		} catch (error) {
 			console.log(error);
 		}
-
-		socket.emit("joinRoom", {
-			_id: currentUser?.user._id,
-			room,
-		});
 	};
 
 	return (
@@ -111,7 +112,10 @@ const FriendChatBoxItem = ({
 				<div
 					className={own === message.user ? "messageLeft own" : "messageLeft"}
 				>
-					<img src={user?.img || "/assets/" + user?.img} alt="" />
+					<img
+						src={user?.img ? "/assets/" + user?.img : "https://bit.ly/3VlFEBJ"}
+						alt=""
+					/>
 				</div>
 				<div className="messageRight">
 					{open && (
@@ -135,7 +139,10 @@ const FriendChatBoxItem = ({
 						>
 							{user?.fullName}
 						</span>
-						<span className="messageTime">
+						<span
+							className="messageTime"
+							style={{ fontSize: "12px", color: "orange", fontWeight: "600" }}
+						>
 							{new Date(message.createdAt).toLocaleString()}
 						</span>
 						<span className={own === message.user ? "you own" : "you"}>

@@ -5,16 +5,16 @@ import { AuthContext } from "../../context/AuthContext";
 import axiosInstance from "../../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
 
-const FriendsListItem = ({ friend, id, onlineUsers }) => {
+const FriendsListItem = ({ friend, id }) => {
 	const [myFriend, setMyFriend] = useState(null);
 	const [friendMessages, setFriendMessages] = useState([]);
 
-	const { currentUser } = useContext(AuthContext);
+	const { currentUser, onlineUsers } = useContext(AuthContext);
 	const TOKEN = currentUser?.token;
 	const user = currentUser?.user;
 
 	const friendId = friend.members.find((member) => member !== user._id);
-	const isOnlineUser = onlineUsers?.some((user) => user.userId === friendId);
+	const isOnlineUser = onlineUsers?.some((user) => user._id === friendId);
 
 	const config = {
 		headers: {
@@ -61,12 +61,19 @@ const FriendsListItem = ({ friend, id, onlineUsers }) => {
 	const handleNavigate = () => {
 		navigate(`/friend/${id}`, { state: { myFriend } });
 	};
-
 	return (
 		<div className="listItem" onClick={handleNavigate}>
 			<div className="left">
 				<div className="imageDiv">
-					<img className="friendimg" src={myFriend?.img} alt="" />
+					<img
+						className="friendimg"
+						src={
+							myFriend?.img
+								? "/assets/" + myFriend?.img
+								: "https://bit.ly/3VlFEBJ"
+						}
+						alt=""
+					/>
 					{isOnlineUser && <span className="onlineIndicator"></span>}
 				</div>
 				<div className="textDiv">

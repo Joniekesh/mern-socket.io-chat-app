@@ -34,12 +34,7 @@ const SendMessage = ({ id, messages, setMessages, socket }) => {
 			user: currentUser?.user._id,
 		};
 
-		socket.emit("createRoomMessage", {
-			chatImg: file ? url : "",
-			roomId: id,
-			text,
-			user: currentUser?.user,
-		});
+		socket.emit("createRoomMessage", newMessage);
 
 		try {
 			const res = await axiosInstance.post(
@@ -47,8 +42,8 @@ const SendMessage = ({ id, messages, setMessages, socket }) => {
 				newMessage,
 				config
 			);
-			setMessages([...messages, res.data]);
-			if (res.status === 200) {
+			if (res.status === 201) {
+				setMessages([...messages, res.data]);
 				setText("");
 				setFile("");
 			}

@@ -93,15 +93,15 @@ app.use("/api/conversations", conversationRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/roomMessages", roomMessageRoutes);
 
-// const __dirname = path.resolve();
+const __dirname = path.resolve();
 
-// if (process.env.NODE_ENV === "production") {
-// 	app.use(express.static("client/build"));
+if (process.env.NODE_ENV === "production") {
+	app.use(express.static("../client/build"));
 
-// 	app.get("*", (req, res) =>
-// 		res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
-// 	);
-// }
+	app.get("*", (req, res) =>
+		res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
+	);
+}
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () =>

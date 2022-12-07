@@ -8,7 +8,7 @@ const FriendsList = ({ friends, friendLoading, onlineUsers }) => {
 			{friendLoading ? (
 				<Loader />
 			) : friends.length > 0 ? (
-				friends.map((friend) => (
+				friends?.map((friend) => (
 					<FriendsListItem
 						friend={friend}
 						key={friend._id}

@@ -29,7 +29,7 @@ const App = () => {
 	};
 
 	useEffect(() => {
-		setSocket(io("http://localhost:5000/api"));
+		setSocket(io("https://jonie-chatapp.onrender.com"));
 
 		return () => {
 			if (socket.readyState === 1) {

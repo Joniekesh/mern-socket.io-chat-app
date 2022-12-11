@@ -29,7 +29,7 @@ const App = () => {
 	};
 
 	useEffect(() => {
-		setSocket(io("https://localhost:5000/api"));
+		setSocket(io("https://chatapp-mfdp.onrender.com"));
 
 		return () => {
 			if (socket.readyState === 1) {

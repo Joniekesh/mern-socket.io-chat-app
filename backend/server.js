@@ -66,11 +66,11 @@ io.on("connection", (socket) => {
 	});
 });
 
-// const corsOptions = {
-// 	origin: "https://jonie-chatapp.onrender.com",
-// 	optionSuccessStatus: 200,
-// };
-app.use(cors());
+const corsOptions = {
+	origin: "https://chatapp-mfdp.onrender.com",
+	optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 
 const storage = multer.diskStorage({
